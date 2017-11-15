@@ -35,9 +35,39 @@ To import a library driver into your app:
 
 5.  When your app no longer needs the resource, close the connection.
 
-```
-        import com.google.android.things.contrib.driver.button.Button;import com.google.android.things.contrib.driver.button.ButtonInputDriver;...public class ButtonActivity extends Activity {    private static final String TAG = "ButtonActivity";    private static final String BUTTON_PIN_NAME = ...; // GPIO port wired to the button    private ButtonInputDriver mButtonInputDriver;    @Override    protected void onCreate(Bundle savedInstanceState) {        super.onCreate(savedInstanceState);        try {            // Step 3\. Initialize button driver with selected GPIO pin            mButtonInputDriver = new ButtonInputDriver(                    BUTTON_PIN_NAME,                    Button.LogicState.PRESSED_WHEN_LOW,                    KeyEvent.KEYCODE_SPACE);        } catch (IOException e) {            Log.e(TAG, "Error configuring GPIO pin", e);        }    }    @Override    protected void onDestroy(){        super.onDestroy();        // Step 5\. Close the driver and unregister        if (mButtonInputDriver != null) {            try {                mButtonInputDriver.close();            } catch (IOException e) {                Log.e(TAG, "Error closing Button driver", e);            }        }    }}
-```
+~~~java
+
+import com.google.android.things.contrib.driver.button.Button;
+import  com.google.android.things.contrib.driver.button.ButtonInputDriver;
+public class ButtonActivity extends Activity {
+        private static final String TAG = "ButtonActivity";
+        private static final String BUTTON_PIN_NAME = ; // GPIO port wired to the button    
+        private ButtonInputDriver mButtonInputDriver;    
+        @Override    
+        protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);        
+                try {            
+                        // Step 3\. Initialize button driver with selected GPIO pin       
+                        mButtonInputDriver = new ButtonInputDriver(BUTTON_PIN_NAME,Button.LogicState.PRESSED_WHEN_LOW, KeyEvent.KEYCODE_SPACE);        
+                } catch (IOException e) {            
+                        Log.e(TAG, "Error configuring GPIO pin", e);        
+                }    
+        }
+        @Override    
+        protected void onDestroy(){
+                super.onDestroy();        
+                // Step 5\. Close the driver and unregister        
+                if (mButtonInputDriver != null) {
+                        try {
+                                mButtonInputDriver.close();            
+                        } 
+                        catch (IOException e) {                
+                                Log.e(TAG, "Error closing Button driver", e);            
+                        }        
+                }    
+        }
+}
+~~~
 
 ## Bind to the framework
 
